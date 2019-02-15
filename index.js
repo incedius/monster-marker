@@ -30,7 +30,8 @@ module.exports = function markmob(mod) {
     marknext = false,
     marknext_name = '',
     mobBucket=[],
-    fakeOffset=10n
+    fakeOffset=10n,
+    currentMap=0
 	
 	try{
 		config = JSON.parse(fs.readFileSync(path.join(__dirname,'config.json'), 'utf8'))
@@ -137,6 +138,10 @@ module.exports = function markmob(mod) {
 	})
 	
 ////////Dispatches
+  mod.hook('S_LOAD_TOPO', 3, event => {
+    currentMap = event.zone
+  })
+  
   mod.hook('S_LOGIN', 10, event => { 
 		_gameId = event.gameId
 	})
@@ -155,7 +160,7 @@ module.exports = function markmob(mod) {
       
 			if(alerts) notice('Found '+ Monster_ID[`${event.huntingZoneId}_${event.templateId}`])
 			 
-			if(messager) mod.command.message(' Found '+ Monster_ID[`${event.huntingZoneId}_${event.templateId}`])
+			if(messager) mod.command.message(' Found '+ Monster_ID[`${event.huntingZoneId}_${event.templateId}`] + ` "<FONT color=\"#E114\"><ChatLinkAction param=\"3#####99999_9999_9999@${currentMap}@${event.loc.x},${event.loc.y},${event.loc.z}\">&lt;Here&gt;</ChatLinkAction></FONT>"`)
 		}
 	
 		else if(specialMobSearch && event.bySpawnEvent) { //New def
@@ -166,7 +171,7 @@ module.exports = function markmob(mod) {
 			
 			if(alerts) notice('Found Special Monster')
 			
-			if(messager) mod.command.message('Found Special Monster')
+			if(messager) mod.command.message(`Found Special Monster "<FONT color=\"#E114\"><ChatLinkAction param=\"3#####99999_9999_9999@${currentMap}@${event.loc.x},${event.loc.y},${event.loc.z}\">&lt;Here&gt;</ChatLinkAction></FONT>"`)
 			//console.log(`Special mob:${event.huntingZoneId}_${event.templateId}`)
 		}
 			
