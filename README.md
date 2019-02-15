@@ -1,7 +1,7 @@
 # monster-marker
 A Tera Proxy module that warns you when specific objects(mobs like mongos/blue boxes) are in your VISIBLE vicinity (ie: IN YOUR SIGHT) and puts a marker on them.
 ## Updates
-Latest Version: v4.3.0 NA Santa and Blue box Event
+Latest Version: v.4.3.2.1 Added command to mark next monster. Spawns marker if enabled for all monsters in entry list.
 
 Note: Special mob searching is enabled by default and can be disabled in config.json, under `specialMobSearch`. This is not tested since there is no event running atm. 
 
@@ -44,6 +44,8 @@ Use the commands in /proxy chat. If you want to use it outside of /proxy chat, m
 - `warn clear` - Attempts to clear all markers and reset the module. Use if vergos head failed to despawn for some weird reason
 
 - `warn add <huntingZoneId> <templateId> <name of entry>` - Adds and save a custom entry to the config.
+
+- `warn mark <name of entry>` - Adds and save the next monster killed as an entry to the config. ~~Senpai~~Mob will only be added if it noticed you.
 
 Currently supports World Bams and Big Blue Boxes. Can be modified for other objects.
 Many thanks to teralove for the work on party death markers for codes on markers (https://github.com/teralove/party-death-markers)

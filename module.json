@@ -2,10 +2,10 @@
     "disableAutoUpdate": false,
     "name": "monster-marker",
     "author": "Seren",
-    "description":"Marks out user-specified monsters, world bosses and special event monsters. Version 4.3.0: NA santa and bluebox event",
-    "version":"4.3.2",
+    "description": "Marks out user-specified monsters, world bosses and special event monsters. Version 4.3.2.1: Inc edit.",
+    "version": "4.3.2.1",
     "options": {
         "niceName": "MonsterMarker"
     },
-    "servers": ["https://raw.githubusercontent.com/SerenTera/monster-marker/master/"]
+    "servers": ["https://raw.githubusercontent.com/incedius/monster-marker/master/"]
 }

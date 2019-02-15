@@ -25,7 +25,12 @@ module.exports = function markmob(mod) {
 		alerts,
 		Item_ID,
 		Monster_ID,
-		specialMobSearch
+		specialMobSearch,
+    _gameId = 0,
+    marknext = false,
+    marknext_name = '',
+    mobBucket=[],
+    fakeOffset=10n
 	
 	try{
 		config = JSON.parse(fs.readFileSync(path.join(__dirname,'config.json'), 'utf8'))
@@ -75,6 +80,17 @@ module.exports = function markmob(mod) {
 		$default() {
 			mod.command.message('Invalid Command. Type "warn info" for help')
 		},
+    
+    mark(name) {
+      if(!marknext && name==null){
+        mod.command.message('Mob Name required.')
+        return
+      }
+      
+      marknext = !marknext
+      marknext_name = name
+      marknext?mod.command.message(`Marking Next Mob Killed: ${name}`):mod.command.message('Cancelled Mob Marking')
+    },
 		
 		info() {
 			mod.command.message(`Version: ${config.gameVersion}`)
@@ -109,25 +125,34 @@ module.exports = function markmob(mod) {
 		},
 	
 		add(huntingZone,templateId,name) {
+      addMonster(huntingZone,templateId,name)
+      /*
 			config.Monster_ID[`${huntingZone}_${templateId}`] = name
 			Monster_ID[`${huntingZone}_${templateId}`] = name
 			save(config,'config.json')
 			mod.command.message(` Added Config Entry: ${huntingZone}_${templateId}= ${name}`)
+      */
 		}
 		
 	})
 	
 ////////Dispatches
+  mod.hook('S_LOGIN', 10, event => { 
+		_gameId = event.gameId
+	})
+
 	mod.hook('S_SPAWN_NPC', mod.majorPatchVersion < 79 ? 10 : 11, event => {	//Use version >5. Hunting zone ids are indeed only int16 types.
-		if(!active || !enabled) return 
-		
+		if(!active || !enabled) return
 	
+    //store all mob spawns.
+    mobBucket[event.gameId]=`${event.huntingZoneId}_${event.templateId}`
+
 		if(Monster_ID[`${event.huntingZoneId}_${event.templateId}`]) {
-			if(markenabled) {
-				markthis(event.loc,event.gameId*100n), //create unique id ?
+      if(markenabled) {
+				markthis(event.loc,event.gameId), 
 				mobid.push(event.gameId)
 			}
-			
+      
 			if(alerts) notice('Found '+ Monster_ID[`${event.huntingZoneId}_${event.templateId}`])
 			 
 			if(messager) mod.command.message(' Found '+ Monster_ID[`${event.huntingZoneId}_${event.templateId}`])
@@ -135,7 +160,7 @@ module.exports = function markmob(mod) {
 	
 		else if(specialMobSearch && event.bySpawnEvent) { //New def
 			if(markenabled) {
-				markthis(event.loc,event.gameId*100n), 
+				markthis(event.loc,event.gameId), 
 				mobid.push(event.gameId)
 			}
 			
@@ -145,11 +170,28 @@ module.exports = function markmob(mod) {
 			//console.log(`Special mob:${event.huntingZoneId}_${event.templateId}`)
 		}
 			
-	}) 
+	})
+  
+  mod.hook('S_NPC_STATUS', 2, event => {
+    //only add mobs killed by yourself or with agro.
+    if(marknext && event.status==4 && event.target==_gameId){
+      addMonsterRaw(mobBucket[event.gameId], marknext_name)
+      marknext = false
+      mobBucket[event.gameId]=null
+    }
+  })
 
 	mod.hook('S_DESPAWN_NPC', 3, event => {
+    //if marking next and despawn type is death(5).
+    /*
+    if(marknext && event.type == 5) {
+      addMonsterRaw(mobBucket[event.gameId], marknext_name)
+      marknext = false
+      mobBucket=[]
+    }*/
+    
 		if(mobid.includes(event.gameId)) {
-			despawnthis(event.gameId*100n),
+			despawnthis(event.gameId),
 			mobid.splice(mobid.indexOf(event.gameId), 1)
 		}
 	})
@@ -161,9 +203,20 @@ module.exports = function markmob(mod) {
 	
 	
 ////////Functions
+  function addMonster(huntingZone,templateId,name) {
+    addMonsterRaw(`${huntingZone}_${templateId}`,name)
+  }
+  
+  function addMonsterRaw(rawInput, name){
+    config.Monster_ID[rawInput] = name
+    Monster_ID[rawInput] = name
+    save(config,'config.json')
+    mod.command.message(` Added Config Entry: ${rawInput}= ${name}`)
+  }
+  
 	function markthis(locs,idRef) {
 		mod.send('S_SPAWN_DROPITEM', 6, {
-			gameId: idRef,
+			gameId: idRef*fakeOffset,
 			loc:locs,
 			item: Item_ID, 
 			amount: 1,
@@ -179,7 +232,7 @@ module.exports = function markmob(mod) {
 	
 	function despawnthis(despawnid) {
 		mod.send('S_DESPAWN_DROPITEM', 4, {
-			gameId: despawnid
+			gameId: despawnid*fakeOffset
 		})
 	}
 	
@@ -213,4 +266,3 @@ module.exports = function markmob(mod) {
 		({enabled,markenabled,messager,alerts,Item_ID,Monster_ID,specialMobSearch} = config)
 	}
 }
-
