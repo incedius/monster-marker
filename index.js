@@ -127,12 +127,6 @@ module.exports = function markmob(mod) {
 	
 		add(huntingZone,templateId,name) {
       addMonster(huntingZone,templateId,name)
-      /*
-			config.Monster_ID[`${huntingZone}_${templateId}`] = name
-			Monster_ID[`${huntingZone}_${templateId}`] = name
-			save(config,'config.json')
-			mod.command.message(` Added Config Entry: ${huntingZone}_${templateId}= ${name}`)
-      */
 		}
 		
 	})
@@ -142,7 +136,7 @@ module.exports = function markmob(mod) {
     currentMap = event.zone
   })
   
-  mod.hook('S_LOGIN', 10, event => { 
+  mod.hook('S_LOGIN', mod.majorPatchVersion >= 81 ? 13 : 12, event => { 
 		_gameId = event.gameId
 	})
 
@@ -172,7 +166,6 @@ module.exports = function markmob(mod) {
 			if(alerts) notice('Found Special Monster')
 			
 			if(messager) mod.command.message(`Found Special Monster "<FONT color=\"#E114\"><ChatLinkAction param=\"3#####99999_9999_9999@${currentMap}@${event.loc.x},${event.loc.y},${event.loc.z}\">&lt;Here&gt;</ChatLinkAction></FONT>"`)
-			//console.log(`Special mob:${event.huntingZoneId}_${event.templateId}`)
 		}
 			
 	})
@@ -187,15 +180,7 @@ module.exports = function markmob(mod) {
   })
 
 	mod.hook('S_DESPAWN_NPC', 3, event => {
-    //if marking next and despawn type is death(5).
-    /*
-    if(marknext && event.type == 5) {
-      addMonsterRaw(mobBucket[event.gameId], marknext_name)
-      marknext = false
-      mobBucket=[]
-    }*/
-    
-		if(mobid.includes(event.gameId)) {
+  		if(mobid.includes(event.gameId)) {
 			despawnthis(event.gameId),
 			mobid.splice(mobid.indexOf(event.gameId), 1)
 		}

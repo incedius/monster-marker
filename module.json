@@ -1,9 +1,9 @@
 {
     "disableAutoUpdate": false,
     "name": "monster-marker",
-    "author": "Seren",
-    "description": "Marks out user-specified monsters, world bosses and special event monsters. Version 4.3.2.1: Inc edit.",
-    "version": "4.3.2.1",
+    "author": "Seren, Incedius",
+    "description": "Marks out user-specified monsters, world bosses and special event monsters.",
+    "version": "4.3.2.2",
     "options": {
         "niceName": "MonsterMarker"
     },

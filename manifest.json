@@ -1,16 +1,17 @@
 {
     "files": {
-        "README.md": "ea6fa5752c15577c51455ac3d39d7d9f7b3d8779ad7f3923818d9ca75930c035",
-        "index.js": "0c0df2d6327cafdf4edf67f5d580149da93e09db3a55a1c80e7e2a9e8a67f694",
+        "README.md": "8fd89be668f7bfe3d9628f29d58ea0c621cc5535ed9f34808ac6e781dbf0e24b",
+        "config.json": "db1a29b05dcdd16528747633203be4cdc204ba36d65cbddc42a208cef18bdcff",
+        "index.js": "9305ecf21adc6e673538bf86c3f0446fb693479018973cd8ce892c1b0c1e3d6d",
         "lib/configDefault.json": "f06759cba0e328894d9995b610192806c3473ce9188d42d5237247a6b02bf1ce",
-        "module.json": "887aaf8430cd29d0af4a83153fc85f2ebeb90a741b224f936f04f41e86bf9ce8"
+        "module.json": "fbb92925a794cb374978a77f8f42da053cc89496278d60a5d749dc87d12bc69b"
     },
     "defs": {
         "S_DESPAWN_DROPITEM": 4,
         "S_DESPAWN_NPC": 3,
         "S_DUNGEON_EVENT_MESSAGE": 2,
         "S_LOAD_TOPO": 3,
-        "S_LOGIN": 10,
+        "S_LOGIN": [12,13],
         "S_NPC_STATUS": 2,
         "S_SPAWN_DROPITEM": 6,
         "S_SPAWN_NPC": [10,11]
