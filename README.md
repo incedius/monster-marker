@@ -1,7 +1,7 @@
 # monster-marker
 A Tera Proxy module that warns you when specific objects(mobs like mongos/blue boxes) are in your VISIBLE vicinity (ie: IN YOUR SIGHT) and puts a marker on them.
 ## Updates
-Latest Version: v.4.3.2.2 Campatibility fix for major patch 81.
+Latest Version: v.4.3.2.3 Campatibility fix for major patch 86.
 
 Note: Special mob searching is enabled by default and can be disabled in config.json, under `specialMobSearch`. This is not tested since there is no event running atm. 
 
@@ -88,6 +88,8 @@ v4.2.8 Added sSpawnNpc v9, various module.jsons stuff and special mob searching
 v4.2.9, v4.3.0 NA Santa and Blue Box Event
 
 v.4.3.2.1 Added command to mark next monster. Spawns marker if enabled for all monsters in entry list.
+
+v.4.3.2.2 Campatibility fix for major patch 81.
 
 ## Pictures
 Spawns at box (Head cannot be picked up)

@@ -26,7 +26,6 @@ module.exports = function markmob(mod) {
 		Item_ID,
 		Monster_ID,
 		specialMobSearch,
-    _gameId = 0,
     marknext = false,
     marknext_name = '',
     mobBucket=[],
@@ -75,7 +74,9 @@ module.exports = function markmob(mod) {
 		console.log('[Monster Marker] New config file generated. Settings in config.json.')
 	}		
 
-	
+	if(mod.majorPatchVersion >= 85){
+		mod.game.initialize
+	}
 ///////Commands
 	mod.command.add('warn', {
 		$default() {
@@ -135,10 +136,6 @@ module.exports = function markmob(mod) {
   mod.hook('S_LOAD_TOPO', 3, event => {
     currentMap = event.zone
   })
-  
-  mod.hook('S_LOGIN', mod.majorPatchVersion >= 81 ? 13 : 12, event => { 
-		_gameId = event.gameId
-	})
 
 	mod.hook('S_SPAWN_NPC', mod.majorPatchVersion < 79 ? 10 : 11, event => {	//Use version >5. Hunting zone ids are indeed only int16 types.
 		if(!active || !enabled) return
@@ -172,7 +169,7 @@ module.exports = function markmob(mod) {
   
   mod.hook('S_NPC_STATUS', 2, event => {
     //only add mobs killed by yourself or with agro.
-    if(marknext && event.status==4 && event.target==_gameId){
+    if(marknext && event.status==4 && mod.game.me.is(event.target)){
       addMonsterRaw(mobBucket[event.gameId], marknext_name)
       marknext = false
       mobBucket[event.gameId]=null

@@ -3,7 +3,7 @@
     "name": "monster-marker",
     "author": "Seren, Incedius",
     "description": "Marks out user-specified monsters, world bosses and special event monsters.",
-    "version": "4.3.2.2",
+    "version": "4.3.2.3",
     "options": {
         "niceName": "MonsterMarker"
     },
