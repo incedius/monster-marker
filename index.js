@@ -202,7 +202,7 @@ module.exports = function markmob(mod) {
   }
   
 	function markthis(locs,idRef) {
-		mod.send('S_SPAWN_DROPITEM', 6, {
+		mod.send('S_SPAWN_DROPITEM', 8, {
 			gameId: idRef*fakeOffset,
 			loc:locs,
 			item: Item_ID, 
@@ -213,6 +213,7 @@ module.exports = function markmob(mod) {
 			enchant:0,
 			source:0,
 			debug:false,
+			ownerName: '',
 			owners: [{id: 0}]
 		})
 	}
